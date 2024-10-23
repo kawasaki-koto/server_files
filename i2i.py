@@ -2,6 +2,7 @@ from diffusers import AutoPipelineForImage2Image, EulerAncestralDiscreteSchedule
 import torch
 
 def create_pipe(name):
+    global pipe_name, pipe
     pipe_name = name
     pipe = AutoPipelineForImage2Image.from_pretrained(name, torch_dtype=torch.float16, variant="fp16")
     pipe.scheduler = EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config)
@@ -15,5 +16,5 @@ def create_image(checkpoint, prompt, negative_prompt, init_image, steps, strengt
                         image=init_image, 
                         num_inference_steps=steps, strength=strength, guidance_scale=guidance_scale).images[0]
     # output_image.save('output.jpg')
-    return [output_image]
+    return output_image
     # Galleyにはlistで返さないと行けないので

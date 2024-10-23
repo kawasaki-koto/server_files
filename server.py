@@ -3,6 +3,8 @@ from PIL import Image
 import io
 import i2i
 
+i2i.create_pipe("stabilityai/sdxl-turbo")
+
 app = Flask(__name__)
 
 @app.route('/', methods=['POST'])
@@ -21,7 +23,7 @@ def hosting():
     output_image = i2i.create_image(checkpoint, prompt, negative_prompt, init_image, steps, strength, guidance_scale)
 
     img_io = io.BytesIO()
-    generated_image.save(img_io, 'JPEG')
+    output_image.save(img_io, 'JPEG')
     img_io.seek(0)
 
     # 画像をレスポンスとして返す
